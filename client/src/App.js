@@ -163,8 +163,24 @@ export default function App() {
             </ResponsiveContainer>
           </div>
 
-          
+          {/* Footer */}
+          <footer
+            style={{
+              textAlign: "center",
+              marginTop: 40,
+              fontSize: "14px",
+              color: "gray",
+            }}
+          >
+            Made with ❤️ by [Your Name] | Build for Bharat Fellowship 2026
+          </footer>
+        </>
+      )}
+    </div>
+  );
+}
 
+// 🧩 InfoCard Component
 function InfoCard({ icon, title, value, tip }) {
   return (
     <div

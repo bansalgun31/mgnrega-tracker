@@ -17,7 +17,6 @@ export default function App() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // 🏙️ Fetch all districts
   useEffect(() => {
     axios
       .get("/api/districts")
@@ -25,7 +24,6 @@ export default function App() {
       .catch((err) => console.error(err));
   }, []);
 
-  // 📊 Fetch data for selected district
   useEffect(() => {
     if (!district) return;
     const fetchData = async () => {
@@ -182,7 +180,6 @@ export default function App() {
   );
 }
 
-// 🧩 Info Card Component with tooltip
 function InfoCard({ icon, title, value, tip }) {
   return (
     <div

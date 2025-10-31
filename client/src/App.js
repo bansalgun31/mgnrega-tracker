@@ -172,7 +172,7 @@ export default function App() {
               color: "gray",
             }}
           >
-            Made with ❤️ by [Your Name] | Build for Bharat Fellowship 2026
+            Made with GUN BANSAL 
           </footer>
         </>
       )}

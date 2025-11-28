@@ -86,4 +86,4 @@ Invoke-RestMethod -Uri "http://localhost:8080/api/mgnrega/sikar"
 - Add documentation on CSV column meanings inside `docs/`.
 
 **License & Attribution**
-- See `lincense` file for license information.
+- See `lincense` file for license information. 

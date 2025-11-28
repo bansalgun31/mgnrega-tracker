@@ -1,71 +1,89 @@
-MGNREGA District Performance Dashboard
+MGNREGA Tracker
 
-A simple full-stack web app that shows how each district in a state is performing under the Mahatma Gandhi National Rural Employment Guarantee Act (MGNREGA) program.
-Citizens can pick their district and view year-wise data such as households worked, funds utilized, person-days generated, and completed works.
+This repository contains a small full-stack project to explore MGNREGA district-level data (2022-23 → 2025-26) using local CSV files.
 
-Purpose
+**Quick Summary**
+- **Stack:** Node.js + Express (server), React (client)
+- **Data:** CSV files located in `server/data/`
+- **Purpose:** Lightweight dashboard for inspecting district-level MGNREGA statistics
 
-This project was built for the Build for Bharat Fellowship 2026 take-home challenge.
-The goal was to make government open-data easy to understand for rural citizens, especially those who are not familiar with data dashboards or English-only interfaces.
+**Repository Layout**
+- `server/` — Express server and CSV-reading endpoints (`server/index.js`). Serves static files from `../client/build` when present.
+- `client/` — React application (Create React App)
+- `server/data/` — CSV datasets used by the server
 
-Tech Stack
+**API Endpoints**
+- **GET** `/api/districts` — returns a sorted list of district names found in CSV files
+- **GET** `/api/mgnrega/:district` — returns records for the requested district (case-insensitive substring match)
 
-Frontend: React + Recharts
-Backend: Node.js + Express
-Database / Data Source: Local CSV files (official data.gov.in MGNREGA reports)
-Hosting: Render.com
+**Prerequisites**
+- Node.js (v18+ recommended)
+- npm (bundled with Node)
 
-Features
+**Development (PowerShell)**
 
-Year-wise comparison of district performance (2022-23 → 2025-26)
+1) Install server dependencies (project root):
 
-Works entirely offline from CSV files – no API dependency
-
-Auto-detected list of districts from data
-
-Bilingual (Hindi + English) text and tooltips for easy understanding
-
-Simple, mobile-friendly layout with clear icons and charts
-
-Folder Structure
-mgnrega-dashboard/
- ├── client/           → React frontend
- ├── server/           → Express backend
- │    ├── index.js
- │    └── data/        → CSV files for each year
- ├── package.json
- └── README.md
-
-Run Locally
-# 1. Install dependencies
+```powershell
+cd .\
 npm install
-cd client && npm install && npm run build && cd ..
+```
 
-# 2. Start server
-node server/index.js
+2) Install client dependencies (run in separate terminal) and start dev client:
 
-# 3. Open in browser
-http://localhost:8080
+```powershell
+cd .\client
+npm install
+npm start
+```
 
-Deploy on Render
+3) Start the server (project root). The server listens on `PORT` or defaults to `8080`:
 
-Push the project to GitHub
+```powershell
+cd .\
+$env:PORT = 8080  # optional
+npm start
+```
 
-On Render → New Web Service → connect repo
+Notes:
+- The client `package.json` includes a `proxy` set to `http://localhost:8080` to forward API calls during development. Run the React dev server and the Node server concurrently in two terminals.
+- The root `start` script uses `node --watch index.js` to auto-restart on server-side changes (requires Node that supports `--watch`).
 
-Build Command:
+**Build & Serve (production)**
 
-cd client && npm install && npm run build && cd .. && npm install
+```powershell
+cd .\client
+npm run build
+cd ..\
+npm start
+```
 
+After building the client, the server will serve the static files from `client/build`.
 
-Start Command:
+**Sample API Requests (PowerShell)**
 
-node server/index.js
+Get districts:
 
+```powershell
+Invoke-RestMethod -Uri http://localhost:8080/api/districts
+```
 
-Wait for deployment → visit your live URL (e.g. https://mgnrega-dashboard.onrender.com)
+Get MGNREGA info for a district (example: `sikar`):
 
-Data Source
+```powershell
+Invoke-RestMethod -Uri "http://localhost:8080/api/mgnrega/sikar"
+```
 
-Open Government Data Platform, India
-https://data.gov.in/catalog/mahatma-gandhi-national-rural-employment-guarantee-act-mgnrega
+**Data**
+- CSV files are located in `server/data/`. The server reads each file listed in `server/index.js` (`mgnrega_2022-23.csv` through `mgnrega_2025-26.csv`) and skips missing files.
+
+**Troubleshooting**
+- If the client shows network or CORS issues, ensure the server is running on the expected port (`8080`) and that you've started the client dev server separately.
+- If the server does not auto-restart, ensure your Node version supports the `--watch` flag.
+
+**Contributing / Next steps**
+- Add a `start-dev` script that runs both server and client concurrently (e.g., using `concurrently`).
+- Add documentation on CSV column meanings inside `docs/`.
+
+**License & Attribution**
+- See `lincense` file for license information.
